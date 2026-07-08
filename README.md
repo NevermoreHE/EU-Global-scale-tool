@@ -72,7 +72,7 @@ The backend provides:
 
 This software is released under the MIT License 2026.
 
-This repository includes software developed in the context of a Horizon Europe project. The use, modification and distribution of the software are subject to the terms of the Apache License 2.0 and to any applicable provisions defined in the project Grant Agreement and Consortium Agreement.
+This repository includes software developed in the context of a Horizon Europe project. The use, modification and distribution of the software are subject to the terms of the MIT License 2026 and to any applicable provisions defined in the project Grant Agreement and Consortium Agreement.
 
 ## Contributors
 
