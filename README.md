@@ -77,3 +77,7 @@ This repository includes software developed in the context of a Horizon Europe p
 ## Contributors
 
 Developed by Fundación CARTIF in the context of the NEVERMORE project.
+
+## Acknowledgments
+
+"This project has received funding from the European Union’s Horizon Europe research and innovation program under grant agreement No 101056858".
