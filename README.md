@@ -1,2 +1,2 @@
 # NEVERMORE-EU/Global scale 
-NEVERMORE-EU/Global sclae -repository
+NEVERMORE-EU/Global scale -repository
