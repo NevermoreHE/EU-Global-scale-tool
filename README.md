@@ -70,10 +70,10 @@ The backend provides:
 
 ## License
 
-This software is released under the MIT License 2026.
+This software is released under the MIT License.
 
-This repository includes software developed in the context of a Horizon Europe project. The use, modification and distribution of the software are subject to the terms of the MIT License 2026 and to any applicable provisions defined in the project Grant Agreement and Consortium Agreement.
+This repository includes software developed in the context of a Horizon Europe project. The use, modification and distribution of the software are subject to the terms of the MIT License and to any applicable provisions defined in the project Grant Agreement, Consortium Agreement, ownership arrangements and third-party software licences.
 
 ## Contributors
 
-Developed by Fundación CARTIF.
+Developed by Fundación CARTIF in the context of the NEVERMORE project.
