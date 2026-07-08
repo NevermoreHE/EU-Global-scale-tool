@@ -1,0 +1,197 @@
+<div class="body">
+  <div class="sections">
+    <div class="leftSection section">
+      <div class="bodySection">
+        <div class="panel">
+          <div class="title titlePanel">
+            Comparison of scenarios
+          </div>
+          <div class="contentPanel">
+            @if(loading || loadingCompare){
+              @if(progressPercentage == null && progressPercentageCompare == null){
+                <div class="spinContainer">
+                  <nz-spin nzSimple></nz-spin>
+                </div>
+              }
+              @if(progressPercentage == 0){
+                <div class="inProgress">
+                  <p>Your process has been submitted. The calculation of scenario '{{scenario?.name}}' has not started yet and may take a few minutes to complete</p>
+                  <nz-spin nzSimple></nz-spin>
+                </div>
+              }@else if(progressPercentage > 0){
+                <div class="inProgress">
+                  <p>Calculating scenario '{{scenario?.name}}'...</p>
+                  <nz-progress [nzPercent]="progressPercentage"></nz-progress>
+                </div>
+              }
+              @if(progressPercentageCompare == 0){
+                <div class="inProgress">
+                  <p>Your process has been submitted. The calculation of scenario '{{scenarioCompare?.name}}' has not started yet and may take a few minutes to complete</p>
+                  <nz-spin nzSimple></nz-spin>
+                </div>
+              }@else if(progressPercentageCompare > 0){
+                <div class="inProgress">
+                  <p>Calculating scenario '{{scenarioCompare?.name}}'...</p>
+                  <nz-progress [nzPercent]="progressPercentageCompare"></nz-progress>
+                </div>
+              }
+            }
+            @if(seriesError || seriesErrorCompare){
+                @if(seriesError){
+                  <div class="errorMessage">
+                    <p>Something went wrong while calculating scenario '{{scenario?.name}}'. Try saving again to retry</p>
+                    <button class="standardButton" (click)="saveSeries(false)">Retry</button>
+                  </div>  
+                }
+                @if(seriesErrorCompare){
+                  <div class="errorMessage">
+                    <p>Something went wrong while calculating scenario '{{scenarioCompare?.name}}'. Try saving again to retry</p>
+                    <button class="standardButton" (click)="saveSeries(true)">Retry</button>
+                  </div>  
+                }        
+            }
+            @if(!(seriesError || seriesErrorCompare || loading || loadingCompare)) {
+              <div class="content-body">
+                <div class="modeForm" [formGroup]="form">
+                  <div class="option">
+                    <div>Indicator <button class="info-button standartButton" (click)="showPdfIndicators = true">i</button></div>
+                    <nz-select formControlName="indicator">
+                      @for(indicator of indicators; track indicator){
+                        <nz-option [nzValue]="indicator.id" nzLabel="{{indicator.nombre}}" [nzTitle]="indicator.nombre + ': ' + indicator.descripcion" [nzCustomContent] = 'true'>
+                          {{indicator.nombre + ': ' + indicator.descripcion}}
+                        </nz-option>
+                      }
+                    </nz-select>
+                  </div>
+                  <div class="option">
+                    <div>Region</div>
+                    <nz-select formControlName="region">
+                      @if(indicatorSelected){
+                        @for(region of regions; track region){
+                          <nz-option [nzValue]="region.id" nzLabel="{{region.region}}"></nz-option>
+                        }
+                      }                
+                    </nz-select>
+                  </div>            
+                  <div class="field compare">
+                    <div> Compare with baseline </div>
+                    <nz-switch formControlName="compare"></nz-switch>
+                  </div>
+                  <div class="field yearsAplication">
+                    <div> Show years of application </div>
+                    <nz-switch formControlName="yearsAplication"></nz-switch>
+                  </div>
+                </div>         
+                <div class="scenarios">
+                  <div class="scenario scenario1">
+                    <div class="title titleScenario">
+                      Scenario 1: <span class="name">{{scenario?.name}}</span>
+                    </div>
+                    <div class="chart global-results">
+                      <plotly-plot
+                        [data]="graph?.data"
+                        [layout]="graph?.layout"
+                        [useResizeHandler]="true"
+                        [config]="graph?.config"
+                      ></plotly-plot>
+                    </div>
+                    @if(graphBase && form.controls['compare'].value){
+                      <div class="chart global-results">
+                        <plotly-plot
+                          [data]="graphBase.data"
+                          [layout]="graphBase.layout"
+                          [useResizeHandler]="true"
+                          [config]="graphBase.config"
+                        ></plotly-plot>
+                      </div>
+                    }
+                    <div class="policy-info">
+                      <div class="section">
+                        <div class="section-title">Summary of implemented policies:</div>
+                        <ul class="sumary-list">
+                          @for(policy of summary; track policy){
+                            <li>
+                              <div class="policy">{{policy.title}}</div>
+                              <div class="values">
+                                <div class="initial-value">Initial value: <span>{{policy.value_base}}</span> ; </div>
+                                <div class="final-value">Final value: <span>{{policy.value_modified}}</span></div>
+                              </div>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  </div>   
+                  <div class="scenario scenario2">
+                    <div class="title titleScenario">
+                      Scenario 2: <span class="name">{{scenarioCompare?.name}}</span>
+                    </div>
+                    <div class="chart global-results">
+                      <plotly-plot
+                        [data]="graphCompare?.data"
+                        [layout]="graphCompare?.layout"
+                        [useResizeHandler]="true"
+                        [config]="graphCompare?.config"
+                      ></plotly-plot>
+                    </div>
+                    @if(graphBaseCompare && form.controls['compare'].value){
+                      <div class="chart global-results">
+                        <plotly-plot
+                          [data]="graphBaseCompare.data"
+                          [layout]="graphBaseCompare.layout"
+                          [useResizeHandler]="true"
+                          [config]="graphBaseCompare.config"
+                        ></plotly-plot>
+                      </div>
+                    }
+                    <div class="policy-info">
+                      <div class="section">
+                        <div class="section-title">Summary of implemented policies:</div>
+                        <ul class="sumary-list">
+                          @for(policy of summaryCompare; track policy){
+                            <li>
+                              <div class="policy">{{policy.title}}</div>
+                              <div class="values">
+                                <div class="initial-value">Initial value: <span>{{policy.value_base}}</span> ; </div>
+                                <div class="final-value">Final value: <span>{{policy.value_modified}}</span></div>
+                              </div>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  </div> 
+                </div>
+              </div>
+            }
+            <div class="footer-content">
+              <button class="standartButton" [routerLink]="'/scenarios'">Go to projects</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rightSection section">
+      <app-chat></app-chat>
+    </div>
+  </div>
+</div>
+
+
+<nz-modal [(nzVisible)]="showPdfIndicators" [nzClassName]="'pdfModal'" [nzWidth]="'80%'" nzCentered nzTitle="Indicator definitions & units" (nzOnCancel)="showPdfIndicators = false">
+  <div *nzModalContent>
+    <pdf-viewer
+      [src]="'indicators.pdf'"
+      [render-text]="true"
+      [original-size]="false"
+      [fit-to-page]="true"
+      style="width: 100%; height: 80vh;">
+    </pdf-viewer>
+  </div>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="showPdfIndicators = false">Close</button>
+    <button nz-button nzType="primary">
+      <a href="indicators.pdf" target="_blank" rel="noopener">Open in new tab</a>
+    </button>
+  </div>
+</nz-modal>

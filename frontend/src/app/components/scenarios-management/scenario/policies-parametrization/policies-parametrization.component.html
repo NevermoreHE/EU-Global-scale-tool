@@ -1,0 +1,149 @@
+<div class="bodySection">
+  <div class="panel">
+    <div class="title titlePanel">
+      Policy parametrization of scenario '{{scenario?.name}}'
+    </div>
+    <div class="inner-content" [formGroup]="form">
+      @if(loading){ 
+        @if(progressPercentage == null){
+          <div class="inProgress">
+            <nz-spin nzSimple></nz-spin>
+          </div>
+        }@else if(progressPercentage == 0){
+          <div class="inProgress">
+            <p>Your process has been submitted. The calculation has not started yet and may take a few minutes to complete</p>
+            <nz-spin nzSimple></nz-spin>
+          </div>
+        }@else{
+          <div class="inProgress">
+            <p>Calculating...</p>
+            <nz-progress [nzPercent]="progressPercentage"></nz-progress>
+          </div>
+        }        
+      }@else {
+        @if(seriesError){
+          <div class="errorMessage">
+            <p>Something went wrong while calculating. Try saving again to retry</p>
+            <button class="standardButton" (click)="saveSeries()">Retry</button>
+          </div>          
+        }@else {
+          <div class="tabs">
+            @for (sector of policiesInit; track sector.id_sector) {
+              <div class="tab" [ngClass]="{'selected' : sectorSelected == sector}" (click)="changeTab(sector)"><img src="sector_{{sector.id_sector}}.png">{{sector.sector_name}}</div>
+            }
+          </div>
+          <div #tabContainer class="policies tabs" [ngClass]="{'moreCells' : sectorSelected?.policies?.length > 4}" (wheel)="onMouseWheel($event)">
+            <span nz-icon nzType="left" nzTheme="outline" style="font-weight: 700; color: #465C95;" (click)="scrollTabs('left')" class="scrollController left"></span>
+            @for(policy of sectorSelected?.policies; track policy.id_policy){
+              <div class="tab policy" [ngClass]="{'selected' : policySelected == policy}" (click)="openPolicy(policy)">{{policy.name}}</div>
+            }
+            <span nz-icon nzType="right" nzTheme="outline" style="font-weight: 700; color: #465C95;" (click)="scrollTabs('right')" class="scrollController right"></span>
+          </div>
+          <div class="content-body">
+            @if(policySelected) {
+              <div class="policyTab" nz-tooltip nzTooltipTitle="{{policySelected.definition}}">{{policySelected.name}}</div>
+              @if(policySelected.subpolicies.length > 0 && !regionSelected){
+                <div class="subpolicies">
+                  @for (subpolicy of policySelected.subpolicies; track subpolicy) {
+                    <ng-container *ngTemplateOutlet="subpolicyTemplate; context: {subpolicy:subpolicy}"></ng-container>
+                  }
+                </div>
+              }
+              @if(policySelected.regions.length > 0){
+                @if(!regionSelected){                  
+                  <h3>Select a region below to customize the policy parameters in that region</h3>
+                }
+                <div class="regions" [ngClass]="{'regionSelected':regionSelected}">
+                  @if(regionSelected){
+                    <div class="uniqueRegion">
+                      @if(regionSelected?.subsector?.length){
+                        <div class="subsectors tabs">
+                          @for(subsector of regionSelected.subsector;track subsector){
+                            <div class="tab subsector" [ngClass]="{'selected' : subsectorSelected == subsector}" (click)="openSubsector(subsector)">{{subsector.name}}</div>
+                          }
+                        </div>
+                        @if(subsectorSelected){
+                          <div class="subpolicies">
+                            @for (subpolicy of subsectorSelected.subpolicies; track subpolicy) {
+                              <ng-container *ngTemplateOutlet="subpolicyTemplate; context: {subpolicy:subpolicy}"></ng-container>
+                            }
+                          </div>
+                        }
+                      }
+                      <div class="subpolicies">
+                        @for (subpolicy of regionSelected.subpolicies; track subpolicy) {
+                          <ng-container *ngTemplateOutlet="subpolicyTemplate; context: {subpolicy:subpolicy}"></ng-container>
+                        }
+                      </div>
+                      <div class="policyFooter">
+                        <button class="cancel standartButton cancelButton" (click)="cancelRegion()">Cancel</button>
+                        <button class="save standartButton" (click)="saveRegion()">Save</button>
+                      </div>
+                    </div>
+                  }@else {
+                    @for (region of policySelected.regions; track region) {
+                      <div class="region" (click)="openRegion(region)">{{region.name}}</div>
+                    }
+                  }
+                </div>
+              }
+            }
+          </div>
+        }
+      }
+      @if(!regionSelected){
+        <div class="footer-content">
+          <button class="standartButton" [routerLink]="'/scenarios'">Go to projects</button>
+          @if(!loading && !seriesError){
+            <button class="standartButton" (click)="getSeries(true)">{{this.policiesModified.length == 0 ? 'See results' : 'Save and see results'}}</button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<ng-template #subpolicyTemplate let-subpolicy="subpolicy">
+  <div class="subpolicy" [ngClass]="{'activator':subpolicy?.type == 'switch-activator'}" [formGroup]="form">
+    <h3>{{subpolicy.name}}</h3>
+    @if(subpolicy?.type == 'Slider'){
+      <nz-slider formControlName="{{'subpolicy'+subpolicy.id}}" [nzMarks]="getSliderUtilities(subpolicy).marks" [nzMin]="getSliderUtilities(subpolicy).min" [nzMax]="getSliderUtilities(subpolicy).max"
+                [nzStep]="getSliderUtilities(subpolicy).step" [nzTipFormatter]="titleTemplate" [nzDisabled]="false">
+      </nz-slider>
+      
+      <ng-template #titleTemplate let-value>
+        <span class="tooltip">{{ policiesService.formaterTooltipSlider(subpolicy,value) }}</span>
+      </ng-template>
+    }
+    @if(subpolicy?.type == 'switch-activator' || subpolicy?.type == 'Switch'){
+      <nz-switch formControlName="{{'subpolicy'+subpolicy.id}}"></nz-switch>
+    }
+  </div>
+</ng-template>
+
+
+
+<nz-modal
+[(nzVisible)]="confirmIsVisible"
+nzCentered
+[nzClassName]="'confirmModal'"
+[nzTitle]="modalTitle"
+[nzContent]="modalContent"
+[nzFooter]="modalFooter"
+(nzOnCancel)="confirmIsVisible = false; loading = false"
+>
+  <ng-template #modalTitle>
+    <h1>Are you sure?</h1>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <p>This process may take several minutes. Do you want to proceed?</p>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <div class="modalFooter">
+      <button class="standardButton cancelButton" (click)="confirmIsVisible = false; loading = false">Cancel</button>
+      <button class="standardButton applyButton" (click)="saveSeries()">Accept</button>
+    </div>
+  </ng-template>
+</nz-modal>

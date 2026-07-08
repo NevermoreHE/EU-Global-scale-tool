@@ -1,0 +1,13 @@
+<div class="body" style="background-image: url('./desert.png');">
+  <div class="info">
+    <div class="title">Welcome to NEVERMORE EU-Global scale tool!</div>
+    <div class="content">
+      <p>The NEVERMORE EU-global scale tool will make possible an ex-ante evaluation of mitigation and adaptation policies using WILIAM model. Thanks to an easy-to-use interface you will be able to create your own policy-action scenarios selecting different intensities for the application of each policy. After the creation of a scenario, the user will have complete freedom to modify the intensity of each policy working with the set of regions included in the model. As a result of the simulations after the execution of WILIAM model, mitigation and adaptation indicators will be provided to evaluate the effects of policy selection.</p>
+      <p>Click on <span class="italic">START</span> carry out your assessment!</p>
+    </div>
+    <div class="bottom">
+      <button class="standartButton" (click)="guideVisible = true">Start</button>
+    </div>
+  </div>
+</div>
+<app-guide-modal [isVisible]="guideVisible"></app-guide-modal>

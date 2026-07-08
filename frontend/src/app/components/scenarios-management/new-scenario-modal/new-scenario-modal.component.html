@@ -1,0 +1,51 @@
+<nz-modal
+[(nzVisible)]="isVisible"
+[nzTitle]="modalTitle"
+[nzContent]="modalContent"
+[nzFooter]="modalFooter"
+[nzCentered] = "true"
+[nzClassName]="'modalNewScenario'"
+(nzOnCancel)="isVisible = false"
+>
+  <ng-template #modalTitle>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <div class="title">{{scenarioId ? 'EDIT SCENARIO' : 'CREATE NEW SCENARIO'}}</div>
+    <div [formGroup]="form">
+      <div class="campo">
+        <div class="label required">Scenario name</div>
+        <div class="control">
+          <input nz-input formControlName="name" type="text" />
+        </div>
+      </div>
+      <div class="campo">
+        <div class="label">Description <span>(less than 250 characters)</span></div>
+        <div class="control">
+          <nz-textarea-count [nzMaxCharacterCount]="250">
+            <textarea
+              nz-input
+              [nzAutosize]="{ minRows: 6, maxRows: 10 }"
+              maxlength="250"
+              formControlName="description"
+            ></textarea>
+          </nz-textarea-count>
+        </div>
+      </div>
+      <div class="campo">
+        <div class="label required">Type of scenario</div>
+        <div class="control">
+          <nz-select formControlName="isPublic">
+            <nz-option nzLabel="Public" nzValue="{{true}}"></nz-option>
+            <nz-option nzLabel="Private" nzValue="{{false}}"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button class="standartButton" (click)="isVisible = false">Cancel</button>
+    <button class="standartButton" (click)="save()" [disabled]="!form.valid">Save</button>
+  </ng-template>
+</nz-modal>

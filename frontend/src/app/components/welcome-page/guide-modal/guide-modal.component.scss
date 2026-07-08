@@ -1,0 +1,122 @@
+::ng-deep .cdk-overlay-backdrop.ant-modal-mask.cdk-overlay-backdrop-showing {
+    background-color: rgb(255 255 255 / 20%);
+    backdrop-filter: blur(3px);
+}
+::ng-deep .guideModal{
+    .ant-modal-content{
+        background: rgba(245, 245, 245, 0.6);    
+        border-radius: 34px;
+        box-shadow: 0px 0px 20px 0px rgb(70 92 149 / 60%);
+        margin: 10px 0 ;
+        >*{
+            background: none;
+        }
+        .ant-modal-close{
+            background-color: rgba(120, 120, 128, 0.16);
+            border-radius: 50%;
+            right: auto;
+            left: 13px;
+            top: 13px;
+            .ant-modal-close-x {
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                .anticon {
+                    vertical-align: middle;
+                }
+            }
+        }
+        .ant-modal-header{
+            border-bottom: 0;    
+            padding: 29px 24px 3px 24px;
+            .ant-modal-title{
+                text-align: center;
+                .guidIcon{
+                    position: absolute;
+                    height: 45px;
+                    top: 13px;
+                    right: 13px;
+                }
+            }
+        }
+        .ant-modal-body{
+            .contentBody{
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                .headers{
+                    display: flex;
+                    .left{
+                        flex: 1 1 40%;
+                    }
+                    .right{
+                        flex: 1 1 60%;
+                    }
+                }
+                .panel{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: stretch;
+                    .panelHeader{
+                        min-height: 45px;
+                        padding: 0 50px;
+                        .title{
+                            font-weight: 500;
+                        }
+                        .subtitle{
+                            font-weight: 300;
+                        }
+                    }
+                    .image{
+                        flex: 1 1 auto;
+                        display: flex;
+                        align-items: center;
+                        position: relative;
+                        img{
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+            .contentBody.first{
+                .panel{
+                    .withRelative{
+                        flex-direction: column;
+                        justify-content: center;
+                        position: relative;
+                        .relative-content {
+                            display: flex;
+                            align-items: end;    
+                            position: relative;                            
+                            left: 6em;
+                            top: -23px;
+                            .arrow{
+                                width: 4em;
+                            }
+                            .text{
+                                width: 6em;
+                                font-size: clamp(0.5rem, 2vw, 1.5rem);
+                                height: min-content;
+                                line-height: 1.2rem;
+                            }
+                        }
+                    }
+                }
+            }
+            .contentBody.second{
+
+            }
+            .contentBody.third{
+
+            }
+        }
+        .ant-modal-footer{
+            border-top: 0;
+            .nextButton{
+                background-color: rgba(70, 92, 149, 0.3);
+                border-radius: 50px;
+            }
+        }
+    }
+    
+}

@@ -1,0 +1,20 @@
+<div class="body">
+  <div class="sections">
+    <div class="leftSection section">
+      <div class="bodySection">
+        @if(loading){
+          <span nz-icon nzType="loading"></span>
+        }@else {
+          @if(panel == panels.CONFIG){
+            <app-policies-parametrization [scenario]="scenario" [firstCharge]="firstCharge" (goResults)="goResults($event)"></app-policies-parametrization>
+          }@else{
+            <app-results [scenario]="scenario" [configuration]="configuration" (goBack)="goBack()"></app-results>
+          }
+        }
+      </div>
+    </div>
+    <div class="rightSection section">
+      <app-chat></app-chat>
+    </div>
+  </div>
+</div>

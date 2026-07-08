@@ -1,0 +1,92 @@
+<div class="body">
+  <div class="sections">
+    <div class="leftSection section">
+      <div class="bodySection">
+        <div class="panel scenarios">
+          <div class="title titlePanel">List of scenarios</div>
+          <div class="contentPanel">
+            <div class="filters">
+              <div class="public" (click)="changeFilter(filters.OWNER)" [ngClass]="{'selected': filterSelected == filters.OWNER}">
+                <img src="./open-padlock.png">
+                <span>Owner</span>
+              </div>
+              <div class="owner" (click)="changeFilter(filters.OTHER)"  [ngClass]="{'selected': filterSelected == filters.OTHER}">
+                <img src="./close-padlock.png">
+                <span>Other</span>
+              </div>
+              <div class="all" (click)="changeFilter(null)"  [ngClass]="{'selected': filterSelected == null}">
+                <img src="./open-padlock.png">
+                <img src="./close-padlock.png">
+                <span>All</span>
+              </div>
+            </div>
+            <div class="tableContainer">
+              @if(loading){    
+                <ng-template #indicatorTemplate><span nz-icon nzType="loading"></span></ng-template>
+                <nz-spin nzSimple [nzIndicator]="indicatorTemplate"></nz-spin>
+              }@else {
+                <nz-table #scenariosTable [nzData]="filteredScenarios" [nzPageSize]="5" [nzPaginationType]="'small'" [nzSize]="'middle'" nzTableLayout="fixed">
+                  <thead>
+                    <tr>
+                      <th nzWidth="15%">Date</th>
+                      <th nzWidth="20%">Name</th>
+                      <th nzWidth="40%">Description</th>
+                      <th nzWidth="25%">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody [formGroup]="formComparing">
+                    @for (scenario of scenariosTable.data; track scenario.id) {
+                      <tr>
+                        <td class="scenarioType">                        
+                          @if(scenario.is_owner){
+                            @if(scenario.is_public){
+                              <span nz-icon nzType="unlock" nzTheme="twotone"></span>
+                            }@else {
+                              <span nz-icon nzType="lock" nzTheme="twotone"></span>
+                            }
+                          }@else {
+                            <span nz-icon nzType="unlock" nzTheme="fill"></span>
+                          }
+                          {{ scenario.created_at |  date:'dd/MM/yyyy'}}
+                        </td>
+                        <td nzEllipsis nz-tooltip nzTooltipTitle="{{scenario.name}}">{{ scenario.name }}</td>
+                        <td nzEllipsis nz-tooltip nzTooltipTitle="{{ scenario.description }}">{{ scenario.description }}</td>
+                          <td class="actions">
+                          @if(comparing){
+                            <input type="checkbox" formControlName="{{'scenario'+ scenario.id}}">
+                          }@else {
+                            <button nz-tooltip nzTooltipTitle="Open" [routerLink]="'/scenarios/'+ scenario.id"><span nz-icon nzType="login" nzTheme="outline"></span></button>
+                            <button [disabled]="!scenario.is_owner" (click)="editScenario(scenario)" nz-tooltip nzTooltipTitle="Edit"><span nz-icon nzType="edit" nzTheme="outline"></span></button>
+                            <button class="delete" [disabled]="!scenario.is_owner" (click)="deleteScenario(scenario.id)" nz-tooltip nzTooltipTitle="Delete"><span nz-icon nzType="delete" nzTheme="outline"></span></button>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </nz-table>
+                <div class="leyend">
+                  <span>Public and not owner: <span nz-icon nzType="unlock" nzTheme="fill"></span></span>
+                  <span>Public and owner: <span nz-icon nzType="unlock" nzTheme="twotone"></span></span>
+                  <span>Private and owner: <span nz-icon nzType="lock" nzTheme="twotone"></span></span>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="bottomPanel">
+            @if(comparing){  
+              <button class="standartButton" (click)="comparing = false">Stop compare</button>            
+              <button class="standartButton" (click)="goToCompare()" [disabled]="scenariosToCompare.length != 2">Execute comparation</button>
+            }@else {
+              <button class="standartButton" (click)="this.openModal.next(null)">New scenario</button>
+              <button class="standartButton" (click)="comparing = true">Compare</button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rightSection section">
+      <app-chat></app-chat>
+    </div>
+  </div>
+</div>
+<app-new-scenario-modal [openModal]="openModal" (scenarioCreated)="loadTable()"></app-new-scenario-modal>

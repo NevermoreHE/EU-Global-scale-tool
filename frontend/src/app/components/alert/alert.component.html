@@ -1,0 +1,40 @@
+@for (alert of alerts; track alerts.indexOf(alert)) {
+  @if (alert.type == 'error') {
+    <nz-alert
+      nzType= "error"
+      nzCloseable
+      nzMessage={{alert.message}}
+      (nzOnClose)="removeAlert(alerts.indexOf(alert))"
+    >
+    </nz-alert>
+  }
+  @if(alert.type == "success"){
+    <nz-alert
+      nzType= "success"
+      nzCloseable
+      nzMessage={{alert.message}}
+      (nzOnClose)="removeAlert(alerts.indexOf(alert))"
+    >
+    </nz-alert>
+
+  }
+  @if(alert.type == "info"){
+    <nz-alert
+      nzType= "info"
+      nzCloseable
+      nzMessage={{alert.message}}
+      (nzOnClose)="removeAlert(alerts.indexOf(alert))"
+    >
+    </nz-alert>
+  }
+  @if(alert.type == "warning"){
+    <nz-alert
+      nzType= "warning"
+      nzCloseable
+      nzMessage={{alert.message}}
+      (nzOnClose)="removeAlert(alerts.indexOf(alert))"
+    >
+    </nz-alert>
+    
+  }
+}

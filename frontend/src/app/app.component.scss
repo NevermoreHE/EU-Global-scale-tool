@@ -1,0 +1,12 @@
+nz-spin{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+app-alert{
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 200000;
+}

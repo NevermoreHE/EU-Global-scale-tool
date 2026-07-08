@@ -1,0 +1,58 @@
+
+<div class="bodySection">
+  <form class="panel search" [formGroup]="formSearch">
+    <button class="searchIcon standartButton" (click)="searchMessagges()">
+      <img src="./icons-search.png">
+    </button>
+    <input class="searchControl" formControlName="value" placeholder="Search">
+  </form>
+  <form class="panel chat" [formGroup]="formChat">
+    <div class="title titlePanel">Communication channel:</div>
+    @if(searchField){
+      <div class="tag">
+        <span>{{searchField}}</span>
+        <span nz-icon nzType="close-circle" nzTheme="outline" (click)="stopSearch()"></span>
+      </div>
+    }
+    <div class="contentPanel">
+      <div class="conversation" [ngClass]="{'no-scroll': disableScroll,'searching': searchField}" (scroll)="onScroll()" #scrollableDiv>
+        <div class="messages">
+          @if(loadingMessage){
+            <div class="loadingMessages">
+              <span nz-icon nzType="loading" nzTheme="outline"></span>
+            </div>
+          }
+          @if(searchField){
+            @for (message of searchedMessage; track message.id) {
+              <ng-container *ngTemplateOutlet="messageTemplate; context: {message:message}"></ng-container>
+            }            
+          }@else {
+            @for (message of historicMessages; track message.id) {
+              <ng-container *ngTemplateOutlet="messageTemplate; context: {message:message}"></ng-container>
+            }
+            @for (message of chatService.receivedData; track message.id) {
+              <ng-container *ngTemplateOutlet="messageTemplate; context: {message:message}"></ng-container>        
+            }
+          }
+          @if(newMessages){
+            <div class="newMessages" (click)="goBottom()">New messages <span nz-icon nzType="arrow-down" nzTheme="outline"></span></div>
+          }
+        </div>
+      </div>
+      <input class="chatControl" formControlName="message" placeholder="Write">
+    </div>
+    <div class="bottomPanel">
+      <button class="standartButton" (click)="sendMessage()" [disabled]="!formChat.valid">Send</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #messageTemplate let-message="message">
+  <div class="message">
+    <div class="info">
+      <div class="user">{{message.user_name}}</div>
+      <div class="date">{{message.created_at | date:'HH:mm dd/MM/yyyy' }}</div>
+    </div>                
+    <div class="text">{{message.texto}}</div>
+  </div>
+</ng-template>

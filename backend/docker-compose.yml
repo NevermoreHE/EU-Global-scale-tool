@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  nevermore_api:
+    build: ./nevermore_api
+    container_name: nevermore_back
+    image: "nevermore/back"
+    environment:
+      - CORS_ORIGINS=$CORS_ORIGINS
+      - DB_HOST=$DB_HOST
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_DATABASE=$DB_DATABASE
+      - REDIS_URL=$REDIS_URL
+      - KEYCLOAK_BASE_URL=$KEYCLOAK_BASE_URL
+      - KEYCLOAK_REALM_ID=$KEYCLOAK_REALM_ID
+      - KEYCLOAK_CLIENT_ID_BACK=$KEYCLOAK_CLIENT_ID_BACK
+      - KEYCLOAK_SECRET_KEY_BACK=$KEYCLOAK_SECRET_KEY_BACK
+      - URL_API_SIMVEN=$URL_API_SIMVEN
+      - APIKEY_SIMVEN=$APIKEY_SIMVEN
+    restart: unless-stopped
+    ports:
+      - $API_PORT_BACK:8000
+
+  nevermore_redis:
+    image: redis:7.4.2
+    ports:
+      - $REDIS_PORT:6379
+    container_name: nevermore_redis
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: nevermore_network

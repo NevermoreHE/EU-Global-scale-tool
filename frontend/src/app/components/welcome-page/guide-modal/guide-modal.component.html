@@ -1,0 +1,58 @@
+<nz-modal [(nzVisible)]="isVisible" [nzClassName]="'guideModal'" nzWidth="fit-content" nzCentered (nzOnCancel)="handleCancel()">
+  <div *nzModalTitle>
+    <div>QUICK START GUIDE</div>
+    <img class="guidIcon" src="guide_icon.png">
+  </div>
+  <div *nzModalContent>
+    <p>Access the NEVERMORE EU-global scale tool to assess and explore different policies with storylines and combining different future climate and demographic scenarios (SSPs)</p>
+    @if(panel == 0){
+      <div class="contentBody first">
+        <div class="headers">
+          <div class="left panel">
+            <div class="panelHeader">
+              <div class="title">User-guide flow</div>
+            </div>
+          </div>
+          <div class="right panel">
+            <div class="panelHeader">
+              <div class="title">Select your scenario:</div>
+              <div class="subtitle">Choose to create a new scenario or  to use a previous scenario</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+            <img src="global1.png">
+        </div>
+      </div>
+    }
+    @else if(panel == 1){
+      <div class="contentBody second">
+        <div class="panel">
+          <div class="panelHeader">
+            <div class="title">Set your parameters:</div>
+            <div class="subtitle">Define key inputs for your scenario, SSPs (the same for the whole storyline),  and the level of application of each policy</div>
+          </div>
+          <div class="image">
+            <img src="global2.png">
+          </div>
+        </div>
+      </div>
+    }
+    @else {
+      <div class="contentBody third">
+        <div class="panel">
+          <div class="panelHeader">
+            <div class="title">Display of results:</div>
+            <div class="subtitle">Selecting the indicator and the region in which you want to display rhe results, the graph will show you the trend until 2060</div>
+          </div>
+          <div class="image">
+            <img src="global3.png">
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" class="nextButton" (click)="next()">{{panel < 2 ? 'Next' : 'Finish'}} <span nz-icon nzType="arrow-right" nzTheme="outline"></span></button>
+  </div>
+</nz-modal>

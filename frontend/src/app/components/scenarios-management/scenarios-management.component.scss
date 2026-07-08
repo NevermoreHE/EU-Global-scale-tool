@@ -1,0 +1,227 @@
+*{
+    min-height: fit-content;
+}
+.body{
+    .sections{
+        .section{
+            nz-spin{
+                text-align: center;
+                background-color: rgba(204, 204, 204, 0.25);
+                box-shadow: rgba(204, 204, 204, 0.25) 0 0 10px 10px;
+            }
+        }
+        .leftSection{
+            .bodySection{
+                .scenarios{
+                    padding: 5px 25px;
+                    .titlePanel, .contentPanel{
+                        border-bottom: 1px solid #8D8D90;            
+                    }
+                    .bottomPanel{
+                        display: flex;
+                        justify-content: space-around;
+                    }
+                    .titlePanel, .bottomPanel{
+                        padding: 12px 0;
+                    }
+                    .contentPanel{
+                        .filters{
+                            display: flex;
+                            justify-content: flex-start;
+                            margin: 20px 0;
+                            >*{
+                                width: 120px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: baseline;
+                                cursor: pointer;
+                                transition: all 0.1s;
+                                img{
+                                    width: 22px;
+                                    height: 22px;
+                                }
+                                span{
+                                    font-size: 16px;
+                                    line-height: 19px;
+                                    margin-left: 5px;
+                                    color: #000000;    
+                                    transition: all 0.1s;                            
+                                }
+                            }
+                            >.selected{
+                                border-bottom: 2px solid #465C95;               
+                                span{
+                                    font-weight: 700;
+                                    color: #465C95;
+                                }
+                            }
+                        }
+                        ::ng-deep .tableContainer{ 
+                            .ant-table-thead{
+                                background: #F1EFEF;
+                                box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.25);
+                                border-radius: 8px;
+                                font-weight: 700;
+                                font-size: 18px;
+                                line-height: 22px;
+                                z-index: 2;
+                                position: relative;
+                                > tr{
+                                    > th{
+                                        background-color: transparent;
+                                        border-bottom: 0;
+                                        padding: 8px 16px;
+                                        font-weight: 700;
+                                        font-size: 18px;
+                                        line-height: 22px;
+                                        text-wrap: nowrap;
+                                    }
+                                    >th:first-child{
+                                        border-radius: 8px 0px 0px 8px;
+                                    }
+                                    >th:last-child{
+                                        border-radius: 0px 8px 8px 0px;
+                                    }
+                                    > th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before{
+                                        width: 0;
+                                    }      
+                                }
+                            }                   
+                            button{
+                                font-size: 16px;
+                            }
+                            button:not(:last-child){
+                                margin-right: 5px;
+                            }
+                        }
+                        td.scenarioType{
+                            position: relative;
+                            span[nz-icon] {
+                                position: absolute;   
+                                top: calc(50% - 9px);
+                                right: 100%; 
+                                font-size: 18px;
+                                margin: 0;
+                            }
+                        }
+                        .actions{
+                            button{
+                                background-color: transparent;
+                                border: none;
+                                color:#465C95;
+                                font-size: 25px;
+                                cursor: pointer;
+                            }
+                            button:disabled{
+                                filter: grayscale(1);
+                                cursor: not-allowed;
+                            }
+                            .delete{
+                                color: rgb(255, 78, 78);
+                            }
+                            input {
+                                vertical-align: middle;
+                                margin-left: 20px;
+                            }
+                        }
+                        .leyend{
+                            span{
+                                margin-right: 1em;
+                                span[nz-icon] {
+                                    font-size: 14px;
+                                    margin: 0;
+                                }
+                            }
+            
+                        }
+                    }
+                    .bottomPanel{
+                        button{
+                            padding: 3px 15px;      
+                        }
+                    }
+                }
+            }
+        }
+        .rightSection{
+            width: calc(27% - 10px);
+            app-chat{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+    
+}
+
+@media(max-width: 1300px){
+    .body{
+        .sections{
+            .leftSection{
+                .bodySection .scenarios{
+                    padding: 4px 20px;
+                    .titlePanel, .bottomPanel{
+                        padding: 10px 0;
+                    }
+                    .contentPanel{
+                        .filters{
+                            margin: 16px 0;
+                            >*{
+                                width: 96px;
+                                img{
+                                    width: 17px;
+                                    height: 17px;
+                                }
+                                span{
+                                    font-size: 13px;
+                                    line-height: 15px;
+                                    margin-left: 4px;                        
+                                }
+                            }
+                        }
+                        ::ng-deep .tableContainer{
+                            .ant-table-thead{
+                                font-size: 14px;
+                                line-height: 18px;
+                                > tr{
+                                    > th{
+                                        padding: 6px 13px;
+                                        font-size: 14px;
+                                        line-height: 18px;
+                                    }
+                                }
+                            }
+                            .ant-table.ant-table-middle .ant-table-footer, 
+                            .ant-table.ant-table-middle .ant-table-tbody > tr > td, 
+                            .ant-table.ant-table-middle .ant-table-thead > tr > th, 
+                            .ant-table.ant-table-middle .ant-table-title, 
+                            .ant-table.ant-table-middle tfoot > tr > td, 
+                            .ant-table.ant-table-middle tfoot > tr > th {
+                                padding: 9px 8px;
+                            }             
+                            button{
+                                font-size: inherit;
+                            }
+                        }
+                    }
+                    .bottomPanel{
+                        button{
+                            padding: 2px 12px;      
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 1143px){
+    .body .leftSection .bodySection.scenarios .contentPanel{
+        ::ng-deep .tableContainer{ 
+            button:not(:last-child){
+                margin-bottom: 5px;
+            }
+        }
+    }
+    
+}
