@@ -37,7 +37,6 @@ The frontend provides:
 - RxJS
 - NG-ZORRO Ant Design
 - Plotly / angular-plotly.js
-- ng2-pdf-viewer
 - Nginx for containerised deployment
 
 ## Backend
